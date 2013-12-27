@@ -1,0 +1,14 @@
+{
+  "name": "freeblog",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "3.4.7",
+    "jade": "1.0.0",
+    "less-middleware": "0.1.14",
+  	"mongoose": "3.8.3"
+  }
+}
