@@ -1,7 +1,6 @@
 process.title = 'freeblog';
 
 var express = require('express'),
-	mongoose = require('mongoose'),
 	lessMiddleware = require('less-middleware'),
 	routes = require('./routes'),
 	config = require('./config'),
@@ -10,9 +9,6 @@ var express = require('express'),
 	viewDir = config.viewDir,
 	publicDir = config.publicDir,
 	app = express();
-
-// mongoose
-global.db = mongoose.createConnection(config.mongo);
 
 // all environments
 app.set('views', viewDir);
