@@ -3,7 +3,8 @@ var mongoose = require('mongoose'),
 
 var PictureSchema = new Schema({
 	desc:  String,
-	ext: String
+	ext: String,
+	date: { type: Date, default: Date.now }
 });
 var Picture = mongoose.model('Picture', PictureSchema);
 module.exports = Picture;
