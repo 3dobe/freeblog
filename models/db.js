@@ -1,4 +1,3 @@
 var mongoose = require('mongoose'),
-	config = require('../config'),
-	db = mongoose.connection(config.mongo);
-module.exports = db;
+	config = require('../config');
+module.exports = mongoose.connect(config.mongo);

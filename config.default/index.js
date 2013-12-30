@@ -4,12 +4,9 @@ var path = require('path'),
 	publicDir = path.resolve(rootDir, 'public'),
 	imgDir = path.resolve(publicDir, 'img'),
 	cssDir = path.resolve(publicDir, 'css'),
-	jsDir = path.resolve(publicDir, 'js'),
-	isTest = !!process.env['test'];
+	jsDir = path.resolve(publicDir, 'js');
 
 module.exports = {
-	isTest: isTest,
-
 	rootDir: rootDir,
 	viewDir: viewDir,
 	publicDir: publicDir,
@@ -19,5 +16,9 @@ module.exports = {
 
 	port: 8008,
 	secret: 'bad',
-	mongo: 'mongodb://localhost/freeblog'
+	mongo: 'mongodb://localhost/freeblog',
+	admin: [{
+		username: 'admin',
+		password: 'admin'
+	}]
 };
