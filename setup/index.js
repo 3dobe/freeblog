@@ -5,13 +5,15 @@ var async = require('async'),
 addAdmin();
 
 function addAdmin() {
-	async.eachSeries(config.admin, function (item, next) {
-		var admin = new User(item);
-		admin.save(next);
-	}, function (err) {
-		if (err) throw err;
-		console.log('admin inserted');
-		done();
+	User.remove({},function(){
+		async.eachSeries(config.admin, function (item, next) {
+			var admin = new User(item);
+			admin.save(next);
+		}, function (err) {
+			if (err) throw err;
+			console.log('admin inserted');
+			done();
+		});
 	});
 }
 

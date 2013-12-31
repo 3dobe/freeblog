@@ -1,5 +1,5 @@
-var mongoose = require('mongoose'),
-	Schema = mongoose.Schema,
+var db = require('./db'),
+	Schema = db.Schema,
 	Picture = require('Picture');
 
 var AlbunSchema = new Schema({
