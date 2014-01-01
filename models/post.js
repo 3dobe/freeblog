@@ -1,16 +1,22 @@
 var db = require('./db'),
-	Schema = db.Schema;
+	CommentSchema, PostSchema, Post;
 
-var PostSchema = new Schema({
+CommentSchema = new db.Schema({
+	name: String,
+	body: String,
+	date: { type: Date, default: Date.now }
+});
+
+PostSchema = new db.Schema({
 	title:  String,
 	author: String,
 	body:   String,
-	comments: [{ name: String, body: String, date: Date }],
+	comments: [CommentSchema],
 	date: { type: Date, default: Date.now }
 });
 PostSchema.methods.addComment = function(name, body){
-	this.comments.push({ name: name, body: body, date:{ type: Date, default: Date.now }});
+	this.comments.push({ name: name, body: body });
 }
-var Post = mongoose.model('Post', PostSchema);
 
+Post = db.model('Post', PostSchema);
 module.exports = Post;

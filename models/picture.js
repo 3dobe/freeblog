@@ -6,5 +6,5 @@ var PictureSchema = new Schema({
 	ext: String,
 	date: { type: Date, default: Date.now }
 });
-var Picture = mongoose.model('Picture', PictureSchema);
+var Picture = db.model('Picture', PictureSchema);
 module.exports = Picture;
