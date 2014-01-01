@@ -19,6 +19,8 @@ module.exports = {
 	mongo: 'mongodb://localhost/freeblog',
 	admin: [{
 		username: 'admin',
-		password: 'admin'
+		password: 'admin',
+		desc: '',
+		email: ''
 	}]
 };
