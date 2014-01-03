@@ -2,7 +2,7 @@ var User = require('../../models/user');
 
 module.exports = function (app) {
 	// login
-	app.post('/auth/login', function (req, res) {
+	app.post('/api/auth/login', function (req, res) {
 		User.findOne({
 			username: req.body['username'],
 			password: User.encrypt(req.body['password'])
@@ -26,7 +26,7 @@ module.exports = function (app) {
 		});
 	});
 	// logout
-	app.post('/auth/logout', function (req, res) {
+	app.post('/api/auth/logout', function (req, res) {
 		req.session.user = null;
 		res.cookie(
 			'message',

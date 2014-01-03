@@ -9,14 +9,19 @@ CommentSchema = new db.Schema({
 
 PostSchema = new db.Schema({
 	title:  String,
-	author: String,
 	body:   String,
 	comments: [CommentSchema],
 	date: { type: Date, default: Date.now }
+});
+PostSchema.plugin(autoIncrement.plugin, {
+	model: 'Post',
+	field: 'postId',
+	startAt: '1',
+	incrementBy: '1'
 });
 PostSchema.methods.addComment = function(name, body){
 	this.comments.push({ name: name, body: body });
 }
 
-Post = db.model('Post', PostSchema);
+var Post = db.model('Post', PostSchema);
 module.exports = Post;
