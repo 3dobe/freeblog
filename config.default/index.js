@@ -17,10 +17,12 @@ module.exports = {
 	port: 8008,
 	secret: 'bad',
 	mongo: 'mongodb://localhost/freeblog',
-	admin: [{
-		username: 'admin',
-		password: 'admin',
-		desc: '',
-		email: ''
-	}]
+	admin: [
+		{
+			username: 'admin',
+			password: 'admin',
+			desc: '',
+			email: ''
+		}
+	]
 };

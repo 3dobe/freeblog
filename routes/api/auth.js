@@ -9,19 +9,30 @@ module.exports = function (app) {
 		}, function(err, user){
 			if (user) {
 				req.session.user = user.username;
-				res.redirect('/admin');
+				res.cookie(
+					'message',
+					'Login success',
+					{ httpOnly: false }
+				);
 			} else {
 				req.session.user = null;
-				res.render('message', {
-					title: 'Auth Fail',
-					message: 'Incorrect username or password.'
-				});
+				res.cookie(
+					'message',
+					'Incorrect username or password',
+					{ httpOnly: false }
+				);
 			}
+			res.redirect('/admin');
 		});
 	});
 	// logout
 	app.post('/auth/logout', function (req, res) {
 		req.session.user = null;
+		res.cookie(
+			'message',
+			'Logout success',
+			{ httpOnly: false }
+		);
 		res.redirect('/admin');
 	});
-}
+};

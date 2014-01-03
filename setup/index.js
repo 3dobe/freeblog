@@ -5,7 +5,7 @@ var async = require('async'),
 addAdmin();
 
 function addAdmin() {
-	User.remove({},function(){
+	User.remove({}, function () {
 		async.eachSeries(config.admin, function (item, next) {
 			var admin = new User(item);
 			admin.save(next);
