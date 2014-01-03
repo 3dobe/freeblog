@@ -1,14 +1,20 @@
 var crypto = require('crypto'),
+	autoIncrement = require('mongoose-auto-increment'),
 	db = require('./db'),
-	Schema = db.Schema;
+	UserSchema, User;
 
-var UserSchema = new Schema({
+UserSchema = new db.Schema({
 	name: String,
 	nickname: String,
 	username: String,
 	password: String,
 	desc: String,
 	email: String
+});
+UserSchema.plugin(autoIncrement.plugin, {
+	model: 'User',
+	field: 'id',
+	startAt: 1
 });
 
 UserSchema.statics.encrypt = function (str) {
@@ -21,7 +27,7 @@ UserSchema.pre('save', function (next) {
 	next();
 });
 
-var User = db.model('User', UserSchema);
+User = db.model('User', UserSchema);
 module.exports = User;
 
 function md5(str) {

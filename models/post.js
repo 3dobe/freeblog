@@ -1,4 +1,5 @@
-var db = require('./db'),
+var autoIncrement = require('mongoose-auto-increment'),
+	db = require('./db'),
 	CommentSchema, PostSchema, Post;
 
 CommentSchema = new db.Schema({
@@ -15,13 +16,12 @@ PostSchema = new db.Schema({
 });
 PostSchema.plugin(autoIncrement.plugin, {
 	model: 'Post',
-	field: 'postId',
-	startAt: '1',
-	incrementBy: '1'
+	field: 'id',
+	startAt: 1
 });
 PostSchema.methods.addComment = function(name, body){
 	this.comments.push({ name: name, body: body });
-}
+};
 
-var Post = db.model('Post', PostSchema);
+Post = db.model('Post', PostSchema);
 module.exports = Post;
