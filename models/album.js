@@ -15,7 +15,7 @@ AlbumSchema = new Schema({
 	title: { type: String, default: '' },
 	pictures: [PictureSchema],
 	date: { type: Date, default: Date.now }
-});
+}, { _id: false });
 AlbumSchema.plugin(autoIncrement.plugin, {
 	model: 'Album',
 	field: '_id',

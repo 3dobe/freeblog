@@ -1,7 +1,7 @@
 var autoIncrement = require('mongoose-auto-increment'),
 	db = require('./db'),
 	Schema = db.Schema,
-	ObjectId = Sechma.ObjectId,
+	ObjectId = Schema.ObjectId,
 	CommentSchema, PostSchema, Post,
 	_ = require('underscore');
 
@@ -13,15 +13,14 @@ CommentSchema = new Schema({
 });
 
 PostSchema = new Schema({
-	id: Number,
 	title: String,
 	body: String,
 	comments: [CommentSchema],
 	date: { type: Date, default: Date.now }
-}, { id: 'id' });
+}, { _id: false });
 PostSchema.plugin(autoIncrement.plugin, {
 	model: 'Post',
-	field: 'id',
+	field: '_id',
 	startAt: 1
 });
 PostSchema.methods.addComment = function (comment, callback) {

@@ -1,4 +1,4 @@
-var Post = require('../../models/post'),
+var Post = require('../models/post'),
 	_ = require('underscore');
 
 module.exports = function(app){
