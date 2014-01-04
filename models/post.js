@@ -1,27 +1,43 @@
 var autoIncrement = require('mongoose-auto-increment'),
 	db = require('./db'),
-	CommentSchema, PostSchema, Post;
+	Schema = db.Schema,
+	ObjectId = Sechma.ObjectId,
+	CommentSchema, PostSchema, Post,
+	_ = require('underscore');
 
-CommentSchema = new db.Schema({
+CommentSchema = new Schema({
+	_id: ObjectId,
 	name: String,
 	body: String,
 	date: { type: Date, default: Date.now }
 });
 
-PostSchema = new db.Schema({
-	title:  String,
-	body:   String,
+PostSchema = new Schema({
+	id: Number,
+	title: String,
+	body: String,
 	comments: [CommentSchema],
 	date: { type: Date, default: Date.now }
-});
+}, { id: 'id' });
 PostSchema.plugin(autoIncrement.plugin, {
 	model: 'Post',
 	field: 'id',
 	startAt: 1
 });
-PostSchema.methods.addComment = function(name, body){
-	this.comments.push({ name: name, body: body });
+PostSchema.methods.addComment = function (comment, callback) {
+	comment.id = new ObjectId();
+	this.comments.push(comment);
+	callback(null);
 };
-
+PostSchema.methods.deleteComment = function (id, callback) {
+	var comment = _.findWhere(this.comments, { _id: id }),
+		index = this.comments.indexOf(comment);
+	if (index === -1) {
+		callback(new Error('No such comment'));
+	} else {
+		this.comments.splice(index, 1);
+		callback(null);
+	}
+}
 Post = db.model('Post', PostSchema);
 module.exports = Post;

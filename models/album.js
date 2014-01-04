@@ -3,11 +3,11 @@ var db = require('./db'),
 	Picture = require('Picture');
 
 var AlbumSchema = new Schema({
-	title:  String,
+	title: String,
 	pictures: [Picture.schema],
 	date: { type: Date, default: Date.now }
 });
-AlbumSchema.methods.addPicture = function(pic){
+AlbumSchema.methods.addPicture = function (pic) {
 	this.pictures.push(pic);
 }
 var Album = db.model('Album', AlbumSchema);

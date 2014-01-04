@@ -1,58 +1,52 @@
-var Post = require('./models/post'),
+var Post = require('../../models/post'),
 	_ = require('underscore');
 
 module.exports = function(app){
-	//post list
-	app.get('/posts',function(req, res){
-		var postlist = null;
-		Post.find({}, function(err, posts){
-			if(posts){
-				postlist = _.reduce(posts, function(memo, post){
-					memo.push(post);
-					return memo;
-				},[]);
-				return res.render('/posts', {
-					postlist: postlist
-				});
-			} else {
-				return res.render('/posts', {
-					message: 'No post'
-				})
-			}
-		});
-	});
-
-	//get post by id
-	app.get('/posts/:id', function(req, res){
-		var id = parseInt(req.params['id']),
-			post = null;
-		Post.findById(id, function(err, p){
-			if(p){
-				post = p;
-				return res.render('/posts/:id', {
-					post: post
-				});
-			} else {
-				return res.render('/posts',{
-					message: 'No such post'
-				});
-			}
-		});
-	});
 	//add post
 	app.post('/api/posts', function(req, res){
 		var title = req.body['title'],
 			body = req.body['body'],
-			p = new post(title, body);
-		p.save(function(err) {
-			if(err)
-				return res.send({
-				 	message: 'Failure'
-				});
+			post = new Post(title, body),
+			message,
+			url;
+		post.save(function(err, p) {
+			if(err){
+				message = err.message;
+				url = '/admin';
+			} else {
+				message = 'Success';
+				url = '/posts/' + p.id;
+			}
 		});
-		res.send({
-			ok: 1,
-			message: 'Success'
-		})
+		res.cookie(
+			'message',
+			message,
+			{ httpOnly: false }
+		);
+		res.redirect(url);
 	});
-}
+
+	//delete post by id
+	app.delete('/api/posts', function(req, res) {
+		var id = parseInt(req.body['id']),
+			url = '/admin',
+			message;
+		Post.findById(id, function(err, post) {
+			if(err) {
+				message = err.message;
+			} else if (!post) {
+				message = 'No such post';
+			} else {
+				post.remove();
+				message = 'Post deleted';
+			}
+		});
+		res.cookie(
+			'message',
+			message,
+			{ httpOnly: false }
+		);
+		res.redirect(url);
+	});
+
+};
