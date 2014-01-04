@@ -1,19 +1,20 @@
 var crypto = require('crypto'),
 	autoIncrement = require('mongoose-auto-increment'),
 	db = require('./db'),
+	Schema = db.Schema,
 	UserSchema, User;
 
-UserSchema = new db.Schema({
+UserSchema = new Schema({
 	name: String,
 	nickname: String,
 	username: String,
 	password: String,
 	desc: String,
 	email: String
-});
+}, { _id: false });
 UserSchema.plugin(autoIncrement.plugin, {
 	model: 'User',
-	field: 'id',
+	field: '_id',
 	startAt: 1
 });
 

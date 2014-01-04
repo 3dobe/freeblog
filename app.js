@@ -17,22 +17,15 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser(config.secret));
 app.use(express.session());
-app.use(function (req, res, next) {
-	if (!req.cookies['messages']) {
-		req.cookies['messages'] = [];
-	}
-	next();
-});
 app.use(app.router);
 app.use(require('less-middleware')({ src: publicDir }));
 app.use(express.static(publicDir));
-
-// error handling
 app.use(function (err, req, res, next) {
+	// error handling
 	// 4 parameters required to takie in error
 	res.render('error', {
-		title: '500 Internal Server Error',
-		description: 'Shit, something blew up with our server.'
+		name: '500 Internal Server Error',
+		message: 'Shit, something blew up with our server.'
 	});
 	console.error(err.stack);
 	next(err);

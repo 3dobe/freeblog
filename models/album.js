@@ -1,15 +1,32 @@
-var db = require('./db'),
+var autoIncrement = require('mongoose-auto-increment'),
+	db = require('./db'),
 	Schema = db.Schema,
-	Picture = require('Picture');
+	ObjectId = Schema.ObjectId,
+	PictureSchema, AlbumSchema, Album;
 
-var AlbumSchema = new Schema({
-	title: String,
-	pictures: [Picture.schema],
+PictureSchema = new Schema({
+	_id: ObjectId,
+	desc: { type: String, default: '' },
+	ext: { type: String, default: '' },
 	date: { type: Date, default: Date.now }
 });
-AlbumSchema.methods.addPicture = function (pic) {
-	this.pictures.push(pic);
-}
-var Album = db.model('Album', AlbumSchema);
 
+AlbumSchema = new Schema({
+	title: { type: String, default: '' },
+	pictures: [PictureSchema],
+	date: { type: Date, default: Date.now }
+});
+AlbumSchema.plugin(autoIncrement.plugin, {
+	model: 'Album',
+	field: '_id',
+	startAt: 1
+});
+
+AlbumSchema.methods.addPicture = function (picture, callback) {
+	picture._id = new ObjectId();
+	this.pictures.push(picture);
+	callback(null);
+};
+
+Album = db.model('Album', AlbumSchema);
 module.exports = Album;
