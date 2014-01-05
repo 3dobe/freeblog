@@ -2,30 +2,33 @@ extends ../layout
 
 block content
 	style(scoped).
-		.box {
-		margin: 30px;
+		form {
+			margin-top: 20px;
 		}
+		.field .choice { display: none; }
+		.field[data-type="text"] input.choice[type="text"] { display: block; }
+		.field[data-type="textarea"] textarea.choice { display: block; }
+		.field[data-type="file"] input.choice[type="file"] { display: block; }
+	script(src='/js/admin/dashboard.js')
 
 	h1= title
 	p Welcome you, #{username}!
-	p
-		form(method='post', action='/api/auth/logout')
-			input(type='submit', value='Logout')
-	p
-		form(method='post', action='/api')
-			select(name='_mothod')
-				each val in ['POST', 'PUT', 'DELETE']
-					option(value=val)= val
-			input(type='text', name='_url')
-			.fields
-				mixin field
-					.field
-						select.type
-							each val in ['text', 'textarea', 'file']
-								option(value=val)= val
-						input(type='text')
-						textarea
-						input(type='file')
-						+field()
-						+field()
-			button '+'
+	form(method='post', action='/api/auth/logout')
+		input(type='submit', value='Logout')
+	form(method='post', action='/api')
+		select(name='_mothod')
+			each val in ['POST', 'PUT', 'DELETE']
+				option(value=val)= val
+		input(type='text', name='_url')
+		.fields
+			mixin field(type)
+				.field(data-type=type)
+					select.type
+						each val in ['text', 'textarea', 'file']
+							option(value=val)= val
+					input.choice(type='text')
+					textarea.choice
+					input.choice(type='file')
+			+field('text')
+			+field('text')
+		input(type='button', value='+')
