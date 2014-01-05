@@ -1,17 +1,17 @@
 extends ../layout
 
 block content
-  style(scoped).
-    form {
-      margin: 30px;
-    }
+	style(scoped).
+		form {
+		margin: 30px;
+		}
 
-  h1= title
-  p Welcome to #{title}
-  form(method='post', action='/auth/login')
-    div
-      input(type='text', name='username', placeholder='Username')
-    div
-      input(type='password', name='password', placeholder='Password')
-    div
-      input(type='submit', value='Login')
+	h1= title
+	p Welcome to #{title}
+	form(method='post', action='/api/auth/login')
+		div
+			input(type='text', name='username', placeholder='Username')
+		div
+			input(type='password', name='password', placeholder='Password')
+		div
+			input(type='submit', value='Login')

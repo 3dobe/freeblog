@@ -2,7 +2,7 @@ var User = require('../../models/user');
 
 module.exports = function (app) {
 	// auth info
-	app.all(/^\/api\//, function (req, res, next) {
+	app.use(function (req, res, next) {
 		req.user = null;
 		if (!('userid' in req.session)) {
 			next();

@@ -3,13 +3,13 @@ extends ../layout
 block content
 	style(scoped).
 		.box {
-			margin: 30px;
+		margin: 30px;
 		}
 
 	h1= title
 	p Welcome you, #{username}!
 	p
-		form(method='post', action='/auth/logout')
+		form(method='post', action='/api/auth/logout')
 			input(type='submit', value='Logout')
 	p
 		form(method='post', action='/api')
@@ -26,6 +26,6 @@ block content
 						input(type='text')
 						textarea
 						input(type='file')
-               	+field()
-				+field()
-			button(value='+')
+						+field()
+						+field()
+			button '+'

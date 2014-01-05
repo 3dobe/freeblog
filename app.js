@@ -17,7 +17,7 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser(config.secret));
 app.use(express.session());
-app.use(app.router);
+//app.use(app.router);
 app.use(require('less-middleware')({ src: publicDir }));
 app.use(express.static(publicDir));
 
