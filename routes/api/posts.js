@@ -4,9 +4,7 @@ var Post = require('../../models/post'),
 module.exports = function(app){
 	//add post
 	app.post('/api/posts', function(req, res){
-		var title = req.body['title'],
-			body = req.body['body'],
-			post = new Post(title, body),
+		var post = new Post(req.body),
 			message,
 			url;
 		post.save(function(err, p) {
@@ -27,14 +25,12 @@ module.exports = function(app){
 	});
 
 	//delete post by id
-	app.delete('/api/posts', function(req, res) {
+	app.delete('/api/posts/:id', function(req, res) {
 		var id = parseInt(req.body['id']),
 			url = '/admin',
 			message;
-		Post.findById(id, function(err, post) {
-			if(err) {
-				message = err.message;
-			} else if (!post) {
+		Post.findByIdAndRemove(id, function(err, post) {
+			if (!post) {
 				message = 'No such post';
 			} else {
 				post.remove();
@@ -76,8 +72,6 @@ module.exports = function(app){
 	//add comment
 	app.post('/api/posts/:id/comments', function(req, res){
 		var id = parseInt(req.params['id']),
-			name = req.body['name'],
-			body = req.body['body'],
 			message,
 			url;
 		Post.findById(id, function(err, post){
@@ -88,10 +82,7 @@ module.exports = function(app){
 				message = 'No such post';
 				url = '/posts';
 			} else {
-				post.addComment({
-					name: name,
-					body: body
-				});
+				post.addComment(req.body);
 				message = 'Comment success';
 				url = '/posts/' + id;
 			}
@@ -110,10 +101,8 @@ module.exports = function(app){
 			cindex = parseInt(req.params['cix']),//comment id
 			url = '/admin',
 			message;
-		Post.findById(pid, function(err, post){
-			if(err) {
-				message = err.message;
-			} else if(!post) {
+		Post.findByIdAndRemove(pid, function(err, post){
+			if(!post) {
 				message = 'No such post';
 			} else {
 				post.deleteComment(cindex, function(err){
