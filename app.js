@@ -20,16 +20,6 @@ app.use(express.session());
 app.use(app.router);
 app.use(require('less-middleware')({ src: publicDir }));
 app.use(express.static(publicDir));
-app.use(function (err, req, res, next) {
-	// error handling
-	// 4 parameters required to takie in error
-	res.render('error', {
-		name: '500 Internal Server Error',
-		message: 'Shit, something blew up with our server.'
-	});
-	console.error(err.stack);
-	next(err);
-});
 
 // routes
 routes(app);

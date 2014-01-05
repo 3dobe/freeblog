@@ -1,7 +1,7 @@
 module.exports = function (app) {
 	require('./api')(app);
-	require('./posts')(app);
 	require('./admin')(app);
+	require('./posts')(app);
 
 	// home page
 	app.get('/', function (req, res) {
