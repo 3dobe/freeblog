@@ -49,6 +49,30 @@ module.exports = function(app){
 		res.redirect(url);
 	});
 
+	//update post by id
+	app.put('/api/posts/:id', function(req, res) {
+		var id = parseInt(req.body['id']),
+			name = req.body['name'],
+			body = req.body['body'],
+			url,
+			message;
+		Post.findByIdAndUpdate(id, { $set: { name: req.body['name'], body: req.body['body'] }}, function(err, post) {
+			if (!post) {
+				message = 'No such post';
+				url = '/admin'
+			} else {
+				message = 'Post updated'
+				url = '/posts/' + id;
+			}
+		});
+		res.cookie(
+			'message',
+			message,
+			{ httpOnly: false }
+		);
+		res.redirect(url);
+	});
+
 	//add comment
 	app.post('/api/posts/:id/comments', function(req, res){
 		var id = parseInt(req.params['id']),
