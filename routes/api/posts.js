@@ -96,20 +96,20 @@ module.exports = function(app){
 	});
 
 	//delete comment
-	app.delete('/api/posts/:pid/comments/:cix', function(req, res){
+	app.delete('/api/posts/:pid/comments/:cid', function(req, res){
 		if (!req.user) {
 			res.cookie('message', 'Auth fail', { httpOnly: false });
 			res.redirect('/albums');
 		} else {
 			var pid = parseInt(req.params['pid']),//post id
-				cindex = parseInt(req.params['cix']),//comment id
+				cid = req.params['cid'],//comment id
 				url = '/admin',
 				message;
 			Post.findByIdAndRemove(pid, function(err, post){
 				if(!post) {
 					message = 'No such post';
 				} else {
-					post.deleteComment(cindex, function(err){
+					post.deleteComment(cid, function(err){
 						if(err) {
 							message = err.message;
 						} else {

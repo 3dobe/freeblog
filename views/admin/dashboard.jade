@@ -1,13 +1,31 @@
 extends ../layout
 
 block content
-  style(scoped).
-    .box {
-      margin: 30px;
-    }
+	style(scoped).
+		.box {
+			margin: 30px;
+		}
 
-  h1= title
-  p Welcome you, #{username}!
-  p
-    form(method='post', action='/auth/logout')
-      input(type='submit', value='Logout')
+	h1= title
+	p Welcome you, #{username}!
+	p
+		form(method='post', action='/auth/logout')
+			input(type='submit', value='Logout')
+	p
+		form(method='post', action='/api')
+			select(name='_mothod')
+				each val in ['POST', 'PUT', 'DELETE']
+					option(value=val)= val
+			input(type='text', name='_url')
+			.fields
+				mixin field
+					.field
+						select.type
+							each val in ['text', 'textarea', 'file']
+								option(value=val)= val
+						input(type='text')
+						textarea
+						input(type='file')
+               	+field()
+				+field()
+			button(value='+')
