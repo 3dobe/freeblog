@@ -1,27 +1,44 @@
-var User = require('../../models/user');
+var async = require('async'),
+	User = require('../../models/user');
 
 module.exports = function (app) {
 	app.use(function (req, res, next) {
 		// auth info
-		req.user = null;
-		if (!('userid' in req.session)) {
-			next();
-		} else {
-			User.findById(req.session['userid'], function (err, user) {
-				if (user) {
-					req.user = user;
+		async.waterfall([
+			function (next) {
+				if (!('userid' in req.session)) {
+					next(new Error('No userid in session'));
+				} else {
+					User.findById(req.session['userid'], next);
 				}
-				next();
-			});
-		}
+			}
+		], function (err, user) {
+			if (user) {
+				req.user = user;
+			}
+			next();
+		});
 	});
 
 	// login
 	app.post('/api/auth/login', function (req, res) {
-		User.findOne({
-			username: req.body['username'],
-			password: User.encrypt(req.body['password'])
-		}, function (err, user) {
+		async.waterfall([
+			function (next) {
+				var data = {
+					username: req.body['username'],
+					password: req.body['password']
+				};
+				if (!data['username'] || !data['password']) {
+					next(new Error('Username and password requied'));
+				} else {
+					next(null, data);
+				}
+			},
+			function (data, next) {
+				data['password'] = User.encrypt(data['password']);
+				User.findOne(data, next);
+			}
+		], function (err, user) {
 			if (!user) {
 				delete req.session['userid'];
 				res.pushMessage('Login fail');
