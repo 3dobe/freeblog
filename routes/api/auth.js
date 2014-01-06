@@ -1,8 +1,8 @@
 var User = require('../../models/user');
 
 module.exports = function (app) {
-	// auth info
 	app.use(function (req, res, next) {
+		// auth info
 		req.user = null;
 		if (!('userid' in req.session)) {
 			next();
@@ -18,27 +18,26 @@ module.exports = function (app) {
 
 	// login
 	app.post('/api/auth/login', function (req, res) {
-		var message;
 		User.findOne({
 			username: req.body['username'],
 			password: User.encrypt(req.body['password'])
 		}, function (err, user) {
-			if (user) {
-				req.session['userid'] = user._id;
-				message = 'Login success';
-			} else {
+			if (!user) {
 				delete req.session['userid'];
-				message = 'Login fail';
+				res.pushMessage('Login fail');
+				res.redirect('back');
+			} else {
+				req.session['userid'] = user._id;
+				res.pushMessage('Login success');
+				res.redirect('/admin');
 			}
-			res.cookie('message', message, { httpOnly: false });
-			res.redirect('/admin');
 		});
 	});
 
 	// logout
 	app.post('/api/auth/logout', function (req, res) {
 		delete req.session['userid'];
-		res.cookie('message', 'Logout success', { httpOnly: false });
+		res.pushMessage('Logout success');
 		res.redirect('/admin');
 	});
 };

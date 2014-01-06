@@ -4,7 +4,6 @@ process.title = 'freeblog';
 var express = require('express'),
 	routes = require('./routes'),
 	config = require('./config'),
-	env = config.env,
 	port = config.port,
 	publicDir = config.publicDir,
 	app = express();
@@ -17,12 +16,19 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser(config.secret));
 app.use(express.session());
-//app.use(app.router);
-app.use(require('less-middleware')({ src: publicDir }));
-app.use(express.static(publicDir));
 
+// message
+app.use(function (req, res, next) {
+	res.pushMessage = function (message) {
+		res.cookie('message', message, { httpOnly: false });
+	};
+	next();
+});
 // routes
 routes(app);
+// static
+app.use(require('less-middleware')({ src: publicDir }));
+app.use(express.static(publicDir));
 
 // listen on port
 app.listen(port, function () {
