@@ -1,41 +1,50 @@
 var Post = require('../models/post'),
+	async = require('async'),
 	_ = require('underscore');
 
-module.exports = function(app){
+module.exports = function (app) {
 	//post list
-	app.get('/posts',function(req, res){
-		var postlist = null;
-		Post.find({}, function(err, posts){
-			if(posts){
-				postlist = _.reduce(posts, function(memo, post){
+	app.get('/posts', function (req, res) {
+		async.waterfall([
+			function (next) {
+				Post.find({}, next);
+			},
+			function (posts, next) {
+				next(posts ? null : new Error('No post'), posts);
+			},
+			function (posts, next) {
+				var postlist = _.reduce(posts, function (memo, post) {
 					memo.push(post);
 					return memo;
-				},[]);
-				return res.render('/posts', {
-					postlist: postlist
-				});
+				}, []);
+				next(null, postlist);
+			}
+		], function (err, postlist) {
+			if (err) {
+				var message = err.message;
+				res.render('/posts', { message: message });
 			} else {
-				return res.render('/posts', {
-					message: 'No post'
-				})
+				res.render('/posts', { postlist: postlist });
 			}
 		});
 	});
 
 	//get post by id
-	app.get('/posts/:id', function(req, res){
-		var id = parseInt(req.params['id']),
-			post = null;
-		Post.findById(id, function(err, p){
-			if(p){
-				post = p;
-				return res.render('/posts/:id', {
-					post: post
-				});
+	app.get('/posts/:id', function (req, res) {
+		var id = req.params['id'];
+		async.waterfall([
+			function (next) {
+				Post.findById(id, next);
+			},
+			function (post, next) {
+				next(post ? null : new Error('Post not exists'), post);
+			}
+		], function (err, post) {
+			if (err) {
+				var message = err.message;
+				render('/posts', { message: message });
 			} else {
-				return res.render('/posts',{
-					message: 'No such post'
-				});
+				render('/posts/' + id, { post: post });
 			}
 		});
 	});

@@ -2,9 +2,9 @@ var Post = require('../../models/post'),
 	async = require('async'),
 	_ = require('underscore');
 
-module.exports = function(app){
+module.exports = function (app) {
 	//add post
-	app.post('/api/posts', function(req, res){
+	app.post('/api/posts', function (req, res) {
 		async.waterfall([
 			function (next) {
 				next(req.user ? null : new Error('Auth fail'));
@@ -21,7 +21,7 @@ module.exports = function(app){
 	});
 
 	//update post by id
-	app.put('/api/posts/:id', function(req, res) {
+	app.put('/api/posts/:id', function (req, res) {
 		async.waterfall([
 			function (next) {
 				next(req.user ? null : new Error('Auth fail'));
@@ -41,7 +41,7 @@ module.exports = function(app){
 	});
 
 	//delete post by id
-	app.delete('/api/posts/:id', function(req, res) {
+	app.delete('/api/posts/:id', function (req, res) {
 		async.waterfall([
 			function (next) {
 				next(req.user ? null : new Error('Auth fail'));
@@ -61,27 +61,27 @@ module.exports = function(app){
 	});
 
 	//add comment
-	app.post('/api/posts/:id/comments', function(req, res){
+	app.post('/api/posts/:id/comments', function (req, res) {
 		async.waterfall([
-		 	function (next) {
+			function (next) {
 				var id = req.params['id'];
 				Post.findById(id, next);
 			},
 			function (post, next) {
-				next(post ? null : new Error('Post not exists'));
+				next(post ? null : new Error('Post not exists'), post);
 			},
-			function (next) {
-				post.addComment(req.body,next);
+			function (post, next) {
+				post.addComment(req.body, next);
 			}
 		], function (err) {
-			var message = err ? err.message : 'Comment success';
+			var message = err ? err.message : 'Comment created';
 			res.pushMessage(message);
 			res.redirect('back');
 		});
 	});
 
 	//delete comment
-	app.delete('/api/posts/:pid/comments/:cid', function(req, res){
+	app.delete('/api/posts/:pid/comments/:cid', function (req, res) {
 		async.waterfall([
 			function (next) {
 				next(req.user ? null : new Error('Auth fail'));
@@ -91,9 +91,9 @@ module.exports = function(app){
 				Post.findById(pid, next);
 			},
 			function (post, next) {
-				next(post ? null : new Error('Post not exists'));
+				next(post ? null : new Error('Post not exists'), post);
 			},
-			function (next) {
+			function (post, next) {
 				var cid = req.params['cid'];
 				post.deleteComment(cid, next);
 			}
