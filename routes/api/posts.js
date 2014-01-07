@@ -1,126 +1,106 @@
 var Post = require('../../models/post'),
+	async = require('async'),
 	_ = require('underscore');
 
-module.exports = function(app){
+module.exports = function (app) {
 	//add post
-	app.post('/api/posts', function(req, res){
-		if (!req.user) {
-			res.cookie('message', 'Auth fail', { httpOnly: false });
-			res.redirect('/albums');
-		} else {
-			var post = new Post(req.body),
-				message,
-				url;
-			post.save(function(err, p) {
-				if(err){
-					message = err.message;
-					url = '/admin';
-				} else {
-					message = 'Success';
-					url = '/posts/' + p.id;
-				}
-			});
-			res.cookie('message', message, { httpOnly: false });
-			res.redirect(url);
-		}
+	app.post('/api/posts', function (req, res) {
+		async.waterfall([
+			function (next) {
+				next(req.user ? null : new Error('Auth fail'));
+			},
+			function (next) {
+				var post = new Post(req.body);
+				post.save(next);
+			}
+		], function (err) {
+			var message = err ? err.message : 'Post created';
+			res.pushMessage(message);
+			res.redirect('back');
+		});
 	});
 
 	//update post by id
-	app.put('/api/posts/:id', function(req, res) {
-		if (!req.user) {
-			res.cookie('message', 'Auth fail', { httpOnly: false });
-			res.redirect('/albums');
-		} else {
-			var id = parseInt(req.body['id']),
-				url,
-				message;
-			Post.findByIdAndUpdate(id, {
-				$set: req.body
-			}, function(err, post) {
-				if (!post) {
-					message = 'No such post';
-					url = '/admin'
-				} else {
-					message = 'Post updated'
-					url = '/posts/' + id;
-				}
-			});
-			res.cookie('message', message, { httpOnly: false });
-			res.redirect(url);
-		}
+	app.put('/api/posts/:id', function (req, res) {
+		async.waterfall([
+			function (next) {
+				next(req.user ? null : new Error('Auth fail'));
+			},
+			function (next) {
+				var id = req.params['id'];
+				Post.findByIdAndUpdate(id, { $set: req.body }, next);
+			},
+			function (post, next) {
+				next(post ? null : new Error('Post not exists'));
+			}
+		], function (err) {
+			var message = err ? err.message : 'Post updated';
+			res.pushMessage(message);
+			res.redirect('back');
+		});
 	});
 
 	//delete post by id
-	app.delete('/api/posts/:id', function(req, res) {
-		if (!req.user) {
-			res.cookie('message', 'Auth fail', { httpOnly: false });
-			res.redirect('/albums');
-		} else {
-			var id = parseInt(req.body['id']),
-				url = '/admin',
-				message;
-			Post.findByIdAndRemove(id, function(err, post) {
-				if (!post) {
-					message = 'No such post';
-				} else {
-					post.remove();
-					message = 'Post deleted';
-				}
-			});
-			res.cookie('message', message, { httpOnly: false });
-			res.redirect(url);
-		}
-
+	app.delete('/api/posts/:id', function (req, res) {
+		async.waterfall([
+			function (next) {
+				next(req.user ? null : new Error('Auth fail'));
+			},
+			function (next) {
+				var id = req.params['id'];
+				Post.findByIdAndRemove(id, next);
+			},
+			function (post, next) {
+				next(post ? null : new Error('Post not exists'));
+			}
+		], function (err) {
+			var message = err ? err.message : 'Post deleted';
+			res.pushMessage(message);
+			res.redirect('back');
+		});
 	});
 
 	//add comment
-	app.post('/api/posts/:id/comments', function(req, res){
-		var id = parseInt(req.params['id']),
-			message,
-			url;
-		Post.findById(id, function(err, post){
-			if(err) {
-				message = message.err;
-				url = '/posts/' + id;
-			} else if(!post) {
-				message = 'No such post';
-				url = '/posts';
-			} else {
-				post.addComment(req.body);
-				message = 'Comment success';
-				url = '/posts/' + id;
+	app.post('/api/posts/:id/comments', function (req, res) {
+		async.waterfall([
+			function (next) {
+				var id = req.params['id'];
+				Post.findById(id, next);
+			},
+			function (post, next) {
+				next(post ? null : new Error('Post not exists'), post);
+			},
+			function (post, next) {
+				post.addComment(req.body, next);
 			}
+		], function (err) {
+			var message = err ? err.message : 'Comment created';
+			res.pushMessage(message);
+			res.redirect('back');
 		});
-		res.cookie('message', message, { httpOnly: false });
-		res.redirect(url);
 	});
 
 	//delete comment
-	app.delete('/api/posts/:pid/comments/:cid', function(req, res){
-		if (!req.user) {
-			res.cookie('message', 'Auth fail', { httpOnly: false });
-			res.redirect('/albums');
-		} else {
-			var pid = parseInt(req.params['pid']),//post id
-				cid = req.params['cid'],//comment id
-				url = '/admin',
-				message;
-			Post.findByIdAndRemove(pid, function(err, post){
-				if(!post) {
-					message = 'No such post';
-				} else {
-					post.deleteComment(cid, function(err){
-						if(err) {
-							message = err.message;
-						} else {
-							message = 'Comment deleted';
-						}
-					});
-				}
-			});
-			res.cookie('message', message, { httpOnly: false });
-			res.redirect(url);
-		}
+	app.delete('/api/posts/:pid/comments/:cid', function (req, res) {
+		async.waterfall([
+			function (next) {
+				next(req.user ? null : new Error('Auth fail'));
+			},
+			function (next) {
+				var pid = req.params['pid'];
+				Post.findById(pid, next);
+			},
+			function (post, next) {
+				next(post ? null : new Error('Post not exists'), post);
+			},
+			function (post, next) {
+				var cid = req.params['cid'];
+				post.deleteComment(cid, next);
+			}
+		], function (err) {
+			var message = err ? err.message : 'Comment deleted';
+			res.pushMessage(message);
+			res.redirect('back');
+		});
 	});
-
 };
