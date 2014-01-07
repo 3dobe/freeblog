@@ -13,7 +13,7 @@ CommentSchema = new Schema({
 });
 
 PostSchema = new Schema({
-	title: { type: String, default: '' },
+	title: { type: String, required: true },
 	body: { type: String, default: '' },
 	comments: [CommentSchema],
 	date: { type: Date, default: Date.now }

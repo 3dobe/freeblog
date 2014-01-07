@@ -1,22 +1,26 @@
 extends ../layout
 
 block content
-	h1= post.title
-	div
-		p= post.title
-		p= post.body
-	div
-		p #{username}
-	ul.comments
-		each comment in post.comments
-			li.comment(data-id=comment._id)
-				div
-					p= comment.name
-					p= comment.body
-	form(method='post', action='/api/posts/'+post._id+'/comments')
-		div
-			input(type='text', name='name')
-		div
-			input(type='text', name='body')
-		div
-			input(type='submit')
+	include ../navbar
+	style(scoped).
+		.main { padding: 0 20px; }
+
+	.main
+		h1= post.title
+
+		.pure-g-r
+			.pure-u-1-2
+				p= post.body
+			.pure-u-1
+				ul.comments
+				each comment in post.comments
+					li.comment(data-id=comment._id)
+						p= comment.name
+						p= comment.body
+		form(method='post', action='/api/posts/'+post._id+'/comments')
+			div
+				input(type='text', name='name')
+			div
+				input(type='text', name='body')
+			div
+				input(type='submit')

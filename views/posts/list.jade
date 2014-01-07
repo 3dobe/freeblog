@@ -1,9 +1,15 @@
 extends ../layout
 
 block content
-	h1= title
+	include ../navbar
+	style(scoped).
+		.main { padding: 0 20px; }
 
-	ul.posts
-		each post in posts
-			li.post(data-id=post._id)
-				a(href='/posts/'+post._id)= post.title
+	.main
+		h1= title
+		.pure-g-r
+			.pure-u-1-2
+				ul.posts
+					each post in posts
+						li.post(data-id=post._id)
+							a(href='/posts/'+post._id)= post.title
