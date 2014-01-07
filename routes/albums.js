@@ -15,9 +15,8 @@ module.exports = function (app) {
 				next(album ? null : new Error('Album not exists'), album);
 			},
 			function (album, next) {
-				var id = req.params['pid'],
-					picturePath = album.getPicturePath(id);
-				next(null, picturePath);
+				var id = req.params['pid'];
+				album.getPicturePath(id, next);
 			}
 		], function (err, picturePath) {
 			if (err) {

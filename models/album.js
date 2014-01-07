@@ -54,14 +54,24 @@ AlbumSchema.pre('remove', function (next) {
 AlbumSchema.methods.getAlbumPath = function () {
 	return path.join(albumDir, '' + this._id);
 };
-AlbumSchema.methods.getPicturePath = function (picture) {
-	if (_.isString(picture)) {	// if id is given
-		var pictureId = picture;
-		picture = _.findWhere(this.pictures, { _id: pictureId });
-	}
+AlbumSchema.methods.getPicture = function (pictureId, callback) {
+	var picture = _.findWhere(this.pictures, { _id: pictureId });
+	callback(picture ? null : new Error('Picture not exists'), picture);
+};
+AlbumSchema.methods.makePicturePath = function (picture) {
 	var albumPath = this.getAlbumPath(),
 		filename = picture._id + picture.ext;
 	return path.join(albumPath, filename);
+};
+AlbumSchema.methods.getPicturePath = function (pictureId, callback) {
+	var self = this;
+	this.getPicture(pictureId, function (err, picture) {
+		if (err) {
+			callback(err);
+		} else {
+			callback(null, self.makePicturePath(picture));
+		}
+	});
 };
 
 AlbumSchema.methods.addPicture = function (picture, files, callback) {
@@ -82,14 +92,14 @@ AlbumSchema.methods.addPicture = function (picture, files, callback) {
 		function (file, next) {
 			var id = uuid(),
 				extname = path.extname(file.name),
-				filename = self.getPicturePath({ _id: id, ext: extname });
+				data = { _id: id, ext: extname },
+				filename = self.makePicturePath(data);
 			fs.rename(file.path, filename, function (err) {
-				next(err, id, extname);
+				next(err, data);
 			});
 		},
-		function (id, extname, next) {
-			picture._id = id;
-			picture.ext = extname;
+		function (data, next) {
+			_.extend(picture, data);
 			self.pictures.push(picture);
 			self.save(function (err) {
 				next(err, picture);
