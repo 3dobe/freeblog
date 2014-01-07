@@ -29,23 +29,27 @@ module.exports = function (app) {
 
 	app.get('/albums', function (req, res) {
 		Album.find({}, function (err, albums) {
-			res.render('albums/list', {
+			res.render('albums', {
 				title: 'Albums',
 				albums: albums
 			});
 		});
 	});
 	app.get('/albums/:id', function (req, res) {
-		var id = req.params['id'];
-		Album.findById(id, function (err, album) {
-			if (!album){
-				res.pushMessage('Album not exists');
-				res.redirect('/albums');
-			} else {
-				res.render('albums/album', {
-					album: album
-				});
-			}
+		Album.find({}, function (err, albums) {
+			var id = req.params['id'];
+			Album.findById(id, function (err, album) {
+				if (!album) {
+					res.pushMessage('Album not exists');
+					res.redirect('/albums');
+				} else {
+					res.render('albums', {
+						title: album.title,
+						albums: albums,
+						album: album
+					});
+				}
+			});
 		});
 	});
 };

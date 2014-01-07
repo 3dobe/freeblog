@@ -1,9 +1,0 @@
-extends ../layout
-
-block content
-	h1= title
-
-	ul.albums
-		each album in albums
-			li.album(data-id=album._id)
-				a(href='/albums/'+album._id)= album.title

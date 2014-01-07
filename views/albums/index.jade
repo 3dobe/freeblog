@@ -1,0 +1,40 @@
+extends ../layout
+
+block content
+	include ../navbar
+	style(scoped).
+		.main { padding: 0 20px; }
+		.menu { margin-bottom: 10px; }
+		.pictures {
+			margin-top: 0;
+		}
+		.picture {
+			position: relative;
+		}
+		.picture>div .desc {
+			position: absolute;
+			top: 0;
+			background-color: rgba(255, 255, 255, 0.5);
+			padding: 10px;
+			word-break: break-all;
+		}
+
+	.main
+		h1= title
+
+		.pure-g-r
+			.pure-u-1-4
+				.menu.pure-menu.pure-menu-open
+					a.pure-menu-heading Albums
+					ul.albums
+						each album in albums
+							li.album(data-id=album._id)
+								a(href='/albums/'+album._id)= album.title
+			.pure-u-3-4
+				- if (album)
+					ul.pictures.pure-g-r
+						each picture in album.pictures
+							li.picture.pure-u-1-4(data-id=picture._id)
+								div
+									img(src='/albums/'+album._id+'/pictures/'+picture._id+'/image')
+									.desc=picture.desc
