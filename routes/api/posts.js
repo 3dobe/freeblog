@@ -28,10 +28,15 @@ module.exports = function (app) {
 			},
 			function (next) {
 				var id = req.params['id'];
-				Post.findByIdAndUpdate(id, { $set: req.body }, next);
+				Post.findById(id, next);
 			},
 			function (post, next) {
-				next(post ? null : new Error('Post not exists'));
+				if (!post) {
+					next(new Error('Post not exists'));
+				} else {
+					post.set(req.body);
+					post.save(next);
+				}
 			}
 		], function (err) {
 			var message = err ? err.message : 'Post updated';
@@ -48,10 +53,14 @@ module.exports = function (app) {
 			},
 			function (next) {
 				var id = req.params['id'];
-				Post.findByIdAndRemove(id, next);
+				Post.findById(id, next);
 			},
 			function (post, next) {
-				next(post ? null : new Error('Post not exists'));
+				if (!post){
+					next(new Error('Post not exists'));
+				} else {
+					post.remove(next);
+				}
 			}
 		], function (err) {
 			var message = err ? err.message : 'Post deleted';
@@ -102,5 +111,29 @@ module.exports = function (app) {
 			res.pushMessage(message);
 			res.redirect('back');
 		});
+	});
+
+	//update comment
+	app.put('/api/posts/:pid/comments/:cid', function (req, res) {
+		async.waterfall([
+			function (next) {
+				next(req.user ? null : new Error('Auth fail'));
+			},
+			function (next) {
+				var pid = req.params['pid'];
+				Post.findById(pid, next);
+			},
+			function (post, next) {
+				next(post ? null : new Error('Post not exists'), post);
+			},
+			function (post, next) {
+				var cid = req.params['cid'];
+				post.updateComment(cid, req.body, next);
+			}
+		], function (err) {
+			var message = err ? err.message : 'Comment updated';
+			res.pushMessage(message);
+			res.redirect('back');
+		})
 	});
 };

@@ -1,0 +1,9 @@
+extends ../layout
+
+block content
+	h1= title
+
+	ul.posts
+		each post in posts
+			li.post(data-id=post._id)
+				a(href='/posts/'+post._id)= post.title

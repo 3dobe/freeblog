@@ -5,6 +5,6 @@
 $(function () {
 	// show message
 	var message = $.cookie('message');
-	$.removeCookie('message');
+	$.removeCookie('message', { path: '/' });
 	if (message) alertify.log(message);
 });
