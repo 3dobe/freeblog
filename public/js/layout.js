@@ -5,6 +5,14 @@
 $(function () {
 	// show message
 	var message = $.cookie('message');
+	if (message) alertify.log(message, '', 0);
 	$.removeCookie('message', { path: '/' });
-	if (message) alertify.log(message);
+
+	// moment date
+	$('.moment').each(function(i, el){
+		var $el = $(el), date = $el.attr('data-date'),
+			//myMoment = moment(date).format('YYYY-MM-DD HH:mm:ss');
+			myMoment = moment(date).fromNow();
+		$el.text(myMoment);
+	});
 });

@@ -1,5 +1,4 @@
 var Post = require('../models/post'),
-	async = require('async'),
 	_ = require('underscore');
 
 module.exports = function (app) {
@@ -22,6 +21,7 @@ module.exports = function (app) {
 				res.redirect('/posts');
 			} else {
 				res.render('posts/post', {
+					title: post.title,
 					post: post
 				});
 			}

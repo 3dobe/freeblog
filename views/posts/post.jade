@@ -4,23 +4,59 @@ block content
 	include ../navbar
 	style(scoped).
 		.main { padding: 0 20px; }
+		.article .date {
+			margin-bottom: 12px;
+		}
+		.comments {
+			margin-top: 16px;
+			border-top: 1px solid #e5e5e5;
+		}
+		.comment {
+			list-style: none;
+		}
+		.comment .date {
+			float: right;
+		}
+		#comment {
+			margin-top: 20px;
+		}
+		#comment #content {
+			height: 70px;
+			width: 50%;
+		}
+		@media (max-width: 480px) {
+			#content { width: 100%; }
+		}
 
 	.main
-		h1= post.title
-
 		.pure-g-r
-			.pure-u-1-2
-				p= post.body
-			.pure-u-1
+			.pure-u-1-8
+			.pure-u-3-4
+				.article
+					h1= post.title
+					.date.moment(data-date=post.date.toJSON())
+					.body= post.body
+
 				ul.comments
 				each comment in post.comments
 					li.comment(data-id=comment._id)
-						p= comment.name
-						p= comment.body
-		form(method='post', action='/api/posts/'+post._id+'/comments')
-			div
-				input(type='text', name='name')
-			div
-				input(type='text', name='body')
-			div
-				input(type='submit')
+						.pure-g-r
+							.pure-u-1
+								.pure-u-1-2
+									.name= comment.name + ' :'
+								.pure-u-1-2
+									.date.moment(data-date=comment.date.toJSON())
+							.pure-u-1
+								blockquote= comment.body
+
+				form#comment.pure-form.pure-form-aligned(method='post', action='/api/posts/'+post._id+'/comments')
+					.fieldset
+						legend Comment
+						.pure-control-group
+							label(for='name') Name
+							input#name(type='text', name='name')
+						.pure-control-group
+							label(for='content') Content
+							textarea#content(type='text', name='body')
+						input(type='submit')
+			.pure-u-1-8

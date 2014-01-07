@@ -2,6 +2,7 @@ extends ../layout
 
 block content
 	include ../navbar
+	link(rel='stylesheet', href='/plugins/fancybox/fancybox-2.1.5.css')
 	style(scoped).
 		.main { padding: 0 20px; }
 		.menu { margin-bottom: 10px; }
@@ -10,17 +11,24 @@ block content
 		}
 		.picture {
 			position: relative;
+			overflow: hidden;
+			margin-bottom: -3px;
 		}
 		.picture>div .desc {
+			padding: 6px;
 			position: absolute;
 			top: 0;
 			background-color: rgba(255, 255, 255, 0.5);
-			padding: 10px;
 			word-break: break-all;
 		}
+		.fancybox-title-float-wrap .child {
+			word-break: break-all;
+		}
+	script(src='/plugins/fancybox/fancybox-2.1.5.min.js')
+	script(src='/js/albums/index.js')
 
 	.main
-		h1= title
+		h1= album.title
 
 		.pure-g-r
 			.pure-u-1-4
@@ -35,6 +43,6 @@ block content
 					ul.pictures.pure-g-r
 						each picture in album.pictures
 							li.picture.pure-u-1-4(data-id=picture._id)
-								div
-									img(src='/albums/'+album._id+'/pictures/'+picture._id+'/image')
-									.desc=picture.desc
+								- var url = '/albums/'+album._id+'/pictures/'+picture._id+'/image'
+								a.fancybox(rel=album.title, href=url, title=picture.desc)
+										img(src=url)
