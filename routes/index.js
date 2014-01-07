@@ -3,6 +3,7 @@ module.exports = function (app) {
 
 	require('./admin')(app);
 	require('./posts')(app);
+	require('./albums')(app);
 
 	// home page
 	app.get('/', function (req, res) {

@@ -1,17 +1,18 @@
 {
-  "name": "freeblog",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "start": "node app.js"
-  },
-  "dependencies": {
-	"underscore": "1.5.2",
-	"async": "0.2.9",
-    "express": "3.4.7",
-    "jade": "1.0.0",
-    "less-middleware": "0.1.14",
-  	"mongoose": "3.8.3",
-	"mongoose-auto-increment": "2.1.1"
-  }
+	"name": "freeblog",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"start": "node app.js"
+	},
+	"dependencies": {
+		"underscore": "1.5.2",
+		"async": "0.2.9",
+		"express": "3.4.7",
+		"jade": "1.0.0",
+		"node-uuid": "1.4.1",
+		"less-middleware": "0.1.14",
+		"mongoose": "3.8.3",
+		"mongoose-auto-increment": "2.1.1"
+	}
 }

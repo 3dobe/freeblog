@@ -15,7 +15,7 @@ block content
 	form#logout(method='post', action='/api/auth/logout')
 		input(type='submit', value='Logout')
 
-	form#request(method='post')
+	form#request(method='post', enctype='multipart/form-data')
 		select(name='_method')
 			each val in ['POST', 'PUT', 'DELETE']
 				option(value=val)= val

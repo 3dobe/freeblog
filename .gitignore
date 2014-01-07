@@ -22,3 +22,5 @@ node_modules
 *.sublime-*
 
 /config
+/content
+!README.md

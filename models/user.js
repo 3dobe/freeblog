@@ -5,12 +5,12 @@ var crypto = require('crypto'),
 	UserSchema, User;
 
 UserSchema = new Schema({
-	name: String,
-	nickname: String,
-	username: String,
-	password: String,
-	desc: String,
-	email: String
+	username: { type: String, required: true, lowercase: true },
+	password: { type: String, required: true },
+	name: { type: String, default: '' },
+	nickname: { type: String, default: '' },
+	desc: { type: String, default: '' },
+	email: { type: String, default: '', lowercase: true }
 }, { _id: false });
 UserSchema.plugin(autoIncrement.plugin, {
 	model: 'User',
@@ -23,8 +23,10 @@ UserSchema.statics.encrypt = function (str) {
 };
 
 UserSchema.pre('save', function (next) {
-	// save into db after encrypting password
-	this.password = User.encrypt(this.password);
+	if (this.isModified('password')) {
+		// encrypt password
+		this.password = User.encrypt(this.password);
+	}
 	next();
 });
 

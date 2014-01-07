@@ -25,10 +25,12 @@ $(function () {
 		var $form = $(this);
 		// set form action
 		$form.attr('action', $form.find('.url').val());
-		// set field name
+		// set field names
 		$form.find('.field').each(function (i, el) {
 			var $el = $(el), key = $el.find('.key').val();
-			$el.find('.choice:visible').attr('name', key);
+			if (key) {
+				$el.find('.choice.active').attr('name', key);
+			}
 		});
 	});
 });

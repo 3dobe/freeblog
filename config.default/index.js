@@ -1,18 +1,17 @@
 var path = require('path'),
 	rootDir = path.resolve(__dirname, '..'),
-	viewDir = path.resolve(rootDir, 'views'),
-	publicDir = path.resolve(rootDir, 'public'),
-	imgDir = path.resolve(publicDir, 'img'),
-	cssDir = path.resolve(publicDir, 'css'),
-	jsDir = path.resolve(publicDir, 'js');
+	contentDir = path.join(rootDir, 'content'),
+	publicDir = path.join(rootDir, 'public');
 
 module.exports = {
 	rootDir: rootDir,
-	viewDir: viewDir,
+	viewDir: path.join(rootDir, 'views'),
+	contentDir: contentDir,
+	albumDir: path.join(contentDir, 'albums'),
 	publicDir: publicDir,
-	imgDir: imgDir,
-	cssDir: cssDir,
-	jsDir: jsDir,
+	imgDir: path.join(publicDir, 'img'),
+	cssDir: path.join(publicDir, 'css'),
+	jsDir: path.join(publicDir, 'js'),
 
 	port: 8008,
 	secret: 'bad',
@@ -24,5 +23,6 @@ module.exports = {
 			desc: '',
 			email: ''
 		}
-	]
+	],
+	pictureLimit: 5 * 1024 * 1024
 };
