@@ -28,11 +28,13 @@ module.exports = function (app) {
 	});
 
 	app.get('/albums', function (req, res) {
-		Album.find({}, function (err, albums) {
-			res.render('albums', {
-				title: 'Albums',
-				albums: albums
-			});
+		Album.findOne({}, function (err, album) {
+			if (!album) {
+				res.pushMessage('No albums');
+				res.redirect('back');
+			} else {
+				res.redirect('/albums/' + album._id);
+			}
 		});
 	});
 	app.get('/albums/:id', function (req, res) {
