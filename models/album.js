@@ -109,7 +109,7 @@ AlbumSchema.methods.addPicture = function (picture, files, callback) {
 };
 AlbumSchema.methods.updatePicture = function (id, data, callback) {
 	var picture = _.findWhere(this.pictures, { _id: id });
-	if (!picture) {	// equals -1
+	if (!picture) {
 		callback(new Error('Picture not exists'));
 	} else {
 		var index = this.pictures.indexOf(picture);
@@ -125,16 +125,20 @@ AlbumSchema.methods.removePicture = function (id, callback) {
 			next(picture ? null : new Error('Picture not exists'), picture);
 		},
 		function (picture, next) {
+			self.getPicturePath(picture._id, function(err, picturePath){
+				next(null, picture, picturePath);
+			});
+		},
+		function(picture, picturePath, next) {
 			var index = self.pictures.indexOf(picture);
 			self.pictures.splice(index, 1);
 			self.save(function (err) {
-				next(err ? err : null, picture);
+				next(err ? err : null, picture, picturePath);
 			});
 		},
-		function (picture, next) {
-			var picturePath = self.getPicturePath(picture);
-			fs.unlink(picturePath, function (err) {
-				next(err, picture);
+		function (picture, picturePath, next) {
+			fs.unlink(picturePath, function () {
+				next(null, picture);
 			});
 		}
 	], callback);
