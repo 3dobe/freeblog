@@ -2,6 +2,7 @@ doctype html
 html
 	head
 		meta(charset='utf-8')
+		meta(name='viewport', content='width=device-width, initial-scale=1.0')
 		title= title
 		link(rel='stylesheet', href='/plugins/pure-0.3.0-min.css')
 		link(rel='stylesheet', href='/plugins/alertify/alertify.core.css')
@@ -13,7 +14,10 @@ html
 		script(src='/plugins/alertify/alertify.min.js')
 		script(src='/js/layout.js')
 	body
-		block content
-		#footer
-			p Copyright(c) 2014 3dobe
-			p Powered by Freeblog
+		#page-wrap
+			block navbar
+			block content
+		#page-footer
+			div
+				p Copyright(c) 2014 3dobe
+				p Powered by Freeblog

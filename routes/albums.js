@@ -38,7 +38,7 @@ module.exports = function (app) {
 		});
 	});
 	app.get('/albums/:id', function (req, res) {
-		Album.find({}, function (err, albums) {
+		Album.find({}).sort({ _id: -1 }).exec(function (err, albums) {
 			var id = req.params['id'];
 			Album.findById(id, function (err, album) {
 				if (!album) {

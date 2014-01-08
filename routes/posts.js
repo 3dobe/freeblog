@@ -4,7 +4,7 @@ var Post = require('../models/post'),
 module.exports = function (app) {
 	//post list
 	app.get('/posts', function (req, res) {
-		Post.find({}, function (err, posts) {
+		Post.find({}).sort({ _id: -1 }).exec(function (err, posts) {
 			res.render('posts/list', {
 				title: 'Posts',
 				posts: posts

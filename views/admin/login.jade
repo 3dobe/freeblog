@@ -2,16 +2,22 @@ extends ../layout
 
 block content
 	style(scoped).
-		form {
-			margin: 30px;
-		}
+		.main { padding: 10px 20px 0; }
 
-	h1= title
-	p Welcome to #{title}
-	form(method='post', action='/api/auth/login')
-		div
-			input(type='text', name='username', placeholder='Username')
-		div
-			input(type='password', name='password', placeholder='Password')
-		div
-			input(type='submit', value='Login')
+	.main
+		.pure-g-r
+			.pure-u-1-6
+			.pure-u-2-3
+				h1= title
+
+				form.pure-form.pure-form-aligned(method='post', action='/api/auth/login')
+					.fieldset
+						legend Login
+						.pure-control-group
+							label Username
+							input(type='text', name='username')
+						.pure-control-group
+							label Password
+							input(type='password', name='password')
+						input.pure-button.pure-button-primary(type='submit')
+			.pure-u-1-6

@@ -1,15 +1,25 @@
 extends ../layout
 
-block content
+block navbar
 	include ../navbar
+
+block content
 	style(scoped).
 		.main { padding: 0 20px; }
+		.posts .post {
+			margin-bottom: 6px;
+		}
 
 	.main
-		h1= title
 		.pure-g-r
-			.pure-u-1-2
+			.pure-u-1-8
+			.pure-u-3-4
+				h1= title
 				ul.posts
 					each post in posts
 						li.post(data-id=post._id)
-							a(href='/posts/'+post._id)= post.title
+							a(href='/posts/'+post._id)
+								h2.title= post.title
+							- var summary = post.body.slice(0, 140) + ' ...'
+							.summary= summary
+			.pure-u-1-8

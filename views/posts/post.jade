@@ -1,18 +1,24 @@
 extends ../layout
 
-block content
+block navbar
 	include ../navbar
+
+block content
 	style(scoped).
-		.main { padding: 0 20px; }
+		.main { padding: 10px 20px 0; }
 		.article .date {
-			margin-bottom: 12px;
+			margin-bottom: 16px;
 		}
 		.comments {
-			margin-top: 16px;
+			margin-top: 20px;
+			padding-top: 20px;
 			border-top: 1px solid #e5e5e5;
 		}
-		.comment {
+		.comments .comment {
 			list-style: none;
+			padding: 10px 20px;
+			margin: 0 0 20px;
+			border-left: 5px solid #eee;
 		}
 		.comment .date {
 			float: right;
@@ -20,12 +26,12 @@ block content
 		#comment {
 			margin-top: 20px;
 		}
-		#comment #content {
+		#comment [name="body"] {
 			height: 70px;
 			width: 50%;
 		}
 		@media (max-width: 480px) {
-			#content { width: 100%; }
+			#comment [name="body"] { width: 100%; }
 		}
 
 	.main
@@ -38,25 +44,24 @@ block content
 					.body= post.body
 
 				ul.comments
-				each comment in post.comments
-					li.comment(data-id=comment._id)
-						.pure-g-r
-							.pure-u-1
+					each comment in post.comments
+						li.comment(data-id=comment._id)
+							.pure-g-r
 								.pure-u-1-2
 									.name= comment.name + ' :'
 								.pure-u-1-2
 									.date.moment(data-date=comment.date.toJSON())
-							.pure-u-1
-								blockquote= comment.body
+								.pure-u-1
+									blockquote= comment.body
 
 				form#comment.pure-form.pure-form-aligned(method='post', action='/api/posts/'+post._id+'/comments')
 					.fieldset
 						legend Comment
 						.pure-control-group
-							label(for='name') Name
-							input#name(type='text', name='name')
+							label Name
+							input(type='text', name='name')
 						.pure-control-group
-							label(for='content') Content
-							textarea#content(type='text', name='body')
-						input(type='submit')
+							label Content
+							textarea(name='body')
+						input.pure-button.pure-button-primary(type='submit')
 			.pure-u-1-8

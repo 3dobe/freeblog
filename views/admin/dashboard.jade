@@ -2,34 +2,59 @@ extends ../layout
 
 block content
 	style(scoped).
-		form {
-			margin-top: 20px;
+		.main { padding: 10px 20px 0; }
+		#logout input {
+			float: right;
 		}
+		#request {
+			margin-top:20px;
+		}
+		.field .type { margin-right: 6px; }
 		.field .choice { display: none; }
-		.field .choice.active { display: block; }
+		.field .choice.active { display: inline-block; }
+		.add { margin-right: 6px; }
 	script(src='/js/admin/dashboard.js')
 
-	h1= title
-	p Welcome you, #{username}!
+	.main
+		.pure-g-r
+			.pure-u-1-6
+			.pure-u-2-3
+				h1= title
 
-	form#logout(method='post', action='/api/auth/logout')
-		input(type='submit', value='Logout')
+				.pure-g-r
+					.pure-u-1-2
+						p Welcome you, #{username}!
+					.pure-u-1-2
+						form#logout(method='post', action='/api/auth/logout')
+							input.pure-button(type='submit', value='Logout')
 
-	form#request(method='post', enctype='multipart/form-data')
-		select(name='_method')
-			each val in ['POST', 'PUT', 'DELETE']
-				option(value=val)= val
-		input.url(type='text', placeholder='URL')
-		.fields
-			mixin field(type)
-				.field
-					select.type
-						each val in ['text', 'file']
-							option(value=val)= val
-					input.key(type='text', placeholder='Key')
-					textarea.choice.text.active(placeholder='Value')
-					input.choice.file(type='file')
-			+field()
-			+field()
-		input.add(type='button', value='+')
-		input(type='submit', value='Submit')
+				form#request.pure-form.pure-form-aligned(method='post', enctype='multipart/form-data')
+					legend Operation
+					fieldset
+						.pure-control-group
+							label Method
+							select(name='_method')
+								each val in ['POST', 'PUT', 'DELETE']
+									option(value=val)= val
+						.pure-control-group
+							label URL
+							input.url(type='text')
+						ul.fields
+							mixin field()
+								li.field
+									.pure-control-group
+										label Key
+										select.type
+											each val in ['text', 'file']
+												option(value=val)= val
+										input.key(type='text')
+									.pure-control-group
+										label Value
+										textarea.choice.text.active
+										input.choice.file(type='file')
+							+field()
+							+field()
+						.pure-control-group
+							input.add.pure-button(type='button', value='+')
+							input.pure-button.pure-button-primary(type='submit', value='Submit')
+			.pure-u-1-6
