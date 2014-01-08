@@ -27,7 +27,6 @@ app.use(function (req, res, next) {
 // routes
 routes(app);
 // static
-app.use(require('less-middleware')({ src: publicDir }));
 app.use(express.static(publicDir));
 
 // listen on port
