@@ -1,4 +1,62 @@
-freeblog
-========
+# freeblog
 
 A lightweight blog framework
+
+## Base
+
+We use Node and MongoDB
+
+## Install and Run
+
+1. Download this package
+
+	```shell
+	cd freeblog
+	```
+
+1. Install dependencies
+
+	```shell
+	npm install
+	```
+
+1. Copy a `config` from `config.example`<br>
+	Modify some configuration inside as you need
+
+	```shell
+	cp -r config.example config
+	```
+
+	*NOTICE: You should update the `admin` information*
+
+1. Initialize database
+
+	```shell
+	node setup
+	```
+
+1. Run it
+
+	```shell
+	node app
+	```
+
+	And then visit `http://localhost:8008`
+
+## Administration
+
+Visit `http://localhost:8008/admin`<br>
+Post a request just with the form
+
+Available REST API:
+- Posts
+	- `POST /api/posts`
+	- `PUT /api/posts/:postid`
+	- `DELETE /api/posts/:postid`
+- Albums
+	- `POST /api/albums`
+	- `PUT /api/albums/:albumid`
+	- `DELETE /api/albums/:albumid`
+	- `POST /api/albums/:albumid/pictures`
+	- `PUT /api/albums/:albumid/pictures/:pictureid`
+	- `DELETE /api/albums/:albumid/pictures/:pictureid`

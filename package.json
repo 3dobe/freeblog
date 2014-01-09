@@ -1,9 +1,8 @@
 {
 	"name": "freeblog",
+	"description": "A lightweight blog framework",
 	"version": "0.0.2",
-	"scripts": {
-		"start": "node app.js"
-	},
+	"main": "app.js",
 	"dependencies": {
 		"underscore": "1.5.2",
 		"async": "0.2.9",
@@ -12,5 +11,13 @@
 		"node-uuid": "1.4.1",
 		"mongoose": "3.8.3",
 		"mongoose-auto-increment": "2.1.1"
-	}
+	},
+	"keywords": ["free", "blog", "cms"],
+	"homepage": "https://github.com/3dobe/freeblog",
+	"bugs": "https://github.com/3dobe/freeblog/issues",
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:3dobe/freeblog.git"
+	},
+	"license": "MIT"
 }
