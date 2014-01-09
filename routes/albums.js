@@ -28,9 +28,11 @@ module.exports = function (app) {
 	});
 
 	app.get('/albums', function (req, res) {
-		Album.findOne({}, function (err, album) {
+		Album.findOne({}, null, {
+			sort: { _id: -1 }
+		}, function (err, album) {
 			if (!album) {
-				res.pushMessage('No albums');
+				res.pushMessage('No albums yet');
 				res.redirect('back');
 			} else {
 				res.redirect('/albums/' + album._id);
@@ -38,7 +40,9 @@ module.exports = function (app) {
 		});
 	});
 	app.get('/albums/:id', function (req, res) {
-		Album.find({}).sort({ _id: -1 }).exec(function (err, albums) {
+		Album.find({}, null, {
+			sort: { _id: -1 }
+		}, function (err, albums) {
 			var id = req.params['id'];
 			Album.findById(id, function (err, album) {
 				if (!album) {

@@ -14,7 +14,7 @@ module.exports = function (app) {
 				post.save(next);
 			}
 		], function (err) {
-			var message = err ? err.message : 'Post created';
+			var message = err ? err.message : 'Post published';
 			res.pushMessage(message);
 			res.redirect('back');
 		});
@@ -63,7 +63,7 @@ module.exports = function (app) {
 				}
 			}
 		], function (err) {
-			var message = err ? err.message : 'Post deleted';
+			var message = err ? err.message : 'Post removed';
 			res.pushMessage(message);
 			res.redirect('back');
 		});
@@ -83,7 +83,7 @@ module.exports = function (app) {
 				post.addComment(req.body, next);
 			}
 		], function (err) {
-			var message = err ? err.message : 'Comment created';
+			var message = err ? err.message : 'Comment posted';
 			res.pushMessage(message);
 			res.redirect('back');
 		});
@@ -107,7 +107,7 @@ module.exports = function (app) {
 				post.deleteComment(cid, next);
 			}
 		], function (err) {
-			var message = err ? err.message : 'Comment deleted';
+			var message = err ? err.message : 'Comment removed';
 			res.pushMessage(message);
 			res.redirect('back');
 		});
