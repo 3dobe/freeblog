@@ -49,14 +49,19 @@ Visit `http://localhost:8008/admin`<br>
 Post a request just with the form
 
 Available REST API:
-- Posts
-	- `POST /api/posts`
-	- `PUT /api/posts/:postid`
-	- `DELETE /api/posts/:postid`
-- Albums
-	- `POST /api/albums`
-	- `PUT /api/albums/:albumid`
-	- `DELETE /api/albums/:albumid`
-	- `POST /api/albums/:albumid/pictures`
-	- `PUT /api/albums/:albumid/pictures/:pictureid`
-	- `DELETE /api/albums/:albumid/pictures/:pictureid`
+- Posts [ title, body ]
+	- POST `/api/posts`
+	- PUT `/api/posts/:postid`
+	- DELETE `/api/posts/:postid`
+- Posts - Comment [ name, body ]
+	- POST `/api/posts/:postid/comments`
+	- PUT `/api/posts/:postid/comments/:commentid`
+	- DELETE `/api/posts/:postid/:commentid`
+- Albums [ title ]
+	- POST `/api/albums`
+	- PUT `/api/albums/:albumid`
+	- DELETE `/api/albums/:albumid`
+- Album - Pictures [ image(file), desc ]
+	- POST `/api/albums/:albumid/pictures`
+	- PUT `/api/albums/:albumid/pictures/:pictureid`
+	- DELETE `/api/albums/:albumid/pictures/:pictureid`
