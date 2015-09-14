@@ -7,6 +7,7 @@
 		"underscore": "1.5.2",
 		"async": "0.2.9",
 		"express": "3.4.7",
+		"fs-extra": "^0.24.0",
 		"jade": "1.0.0",
 		"node-uuid": "1.4.1",
 		"mongoose": "3.8.3",
