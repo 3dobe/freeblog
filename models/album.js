@@ -1,5 +1,5 @@
 var path = require('path'),
-	fs = require('fs'),
+	fs = require('fs-extra'),
 	_ = require('underscore'),
 	async = require('async'),
 	uuid = require('node-uuid').v4,
@@ -32,7 +32,7 @@ AlbumSchema.plugin(autoIncrement.plugin, {
 AlbumSchema.pre('save', function (next) {
 	if (this.isNew) {
 		// create album diretory
-		fs.mkdir(this.getAlbumPath(), next);
+		fs.mkdirp(this.getAlbumPath(), next);
 	} else {
 		next();
 	}
@@ -94,7 +94,7 @@ AlbumSchema.methods.addPicture = function (picture, files, callback) {
 				extname = path.extname(file.name),
 				data = { _id: id, ext: extname },
 				filename = self.makePicturePath(data);
-			fs.rename(file.path, filename, function (err) {
+			fs.move(file.path, filename, function (err) {
 				next(err, data);
 			});
 		},
