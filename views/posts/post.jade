@@ -6,8 +6,11 @@ block navbar
 block content
 	style(scoped).
 		.main { padding: 10px 20px 0; }
-		.article .date {
+		.post .date {
 			margin-bottom: 16px;
+		}
+		.post .body {
+			white-space: pre-wrap;
 		}
 		.comments {
 			margin-top: 20px;
@@ -20,8 +23,16 @@ block content
 			margin: 0 0 20px;
 			border-left: 5px solid #eee;
 		}
+		/*.comment .name {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}*/
 		.comment .date {
 			float: right;
+		}
+		.comment blockquote {
+			white-space: pre-wrap;
 		}
 		#comment {
 			margin-top: 20px;
@@ -38,7 +49,7 @@ block content
 		.pure-g-r
 			.pure-u-1-8
 			.pure-u-3-4
-				.article
+				.post
 					h1= post.title
 					.date.moment(data-date=post.date.toJSON())
 					.body= post.body

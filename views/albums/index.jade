@@ -14,13 +14,16 @@ block content
 			overflow: hidden;
 			margin-bottom: -3px;
 		}
-		.picture>div .desc {
+		.picture img {
+			width: 100%;
+		}
+		/*.picture>div .desc {
 			padding: 6px;
 			position: absolute;
 			top: 0;
 			background-color: rgba(255, 255, 255, 0.5);
 			word-break: break-all;
-		}
+		}*/
 		.fancybox-title-float-wrap .child {
 			word-break: break-all;
 		}
@@ -41,8 +44,8 @@ block content
 			.pure-u-3-4
 				- if (album)
 					ul.pictures.pure-g-r
-						each picture in album.pictures
+						each picture in album.pictures.reverse()
 							li.picture.pure-u-1-4(data-id=picture._id)
 								- var url = '/albums/'+album._id+'/pictures/'+picture._id+'/image'
 								a.fancybox(rel=album.title, href=url, title=picture.desc)
-										img(src=url)
+									img(src=url)

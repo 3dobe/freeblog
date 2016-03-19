@@ -1,6 +1,10 @@
 // app title
 process.title = 'freeblog';
 
+process.on('uncaughtException', function (err) {
+	console.error('uncaughtException', err.stack || err);
+});
+
 var express = require('express'),
 	routes = require('./routes'),
 	config = require('./config'),
