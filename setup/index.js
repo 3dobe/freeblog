@@ -8,7 +8,8 @@ async.series([
 
 function addAdmin(callback) {
 	User = require('../models/user');
-	User.remove({}, function () {
+	User.remove({}, function (err) {
+		if (err) return callback(err);
 		async.eachSeries(config.admin, function (item, next) {
 			var admin = new User(item);
 			admin.save(next);
@@ -29,7 +30,7 @@ function dropDatabase(callback) {
 			callback(err);
 		} else {
 			mongoose.connection.db.dropDatabase(function(err){
-				mongoose.disconnect();
+				// mongoose.disconnect();
 				callback(err);
 			});
 		}

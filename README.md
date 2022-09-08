@@ -14,6 +14,13 @@ We use Node and MongoDB
 	cd freeblog
 	```
 
+1. Make sure `"node": ">=0.8.0 <12.0.0"`
+
+	```shell
+	nvm install 10
+	nvm use 10
+	```
+
 1. Install dependencies
 
 	```shell
@@ -28,6 +35,17 @@ We use Node and MongoDB
 	```
 
 	*NOTICE: You should update the `admin` information*
+
+1. Make sure MongoDB is running
+
+	```shell
+	# npm run mongo3
+	docker run --rm -it -p 127.0.0.1:27017:27017 -v ~/docker-data/local-mongo3:/data/db --name mongo3 mongo:3
+
+	# or
+	# npm run mongo4
+	# npm run mongo5
+	```
 
 1. Initialize database
 
