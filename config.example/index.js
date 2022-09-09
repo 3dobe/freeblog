@@ -13,6 +13,7 @@ module.exports = {
 	cssDir: path.join(publicDir, 'css'),
 	jsDir: path.join(publicDir, 'js'),
 
+	host: 'localhost',
 	port: 8008,
 	secret: 'bad',
 	mongo: 'mongodb://localhost/freeblog',

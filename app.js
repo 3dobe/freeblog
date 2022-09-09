@@ -8,6 +8,7 @@ process.on('uncaughtException', function (err) {
 var express = require('express'),
 	routes = require('./routes'),
 	config = require('./config'),
+	host = config.host,
 	port = config.port,
 	publicDir = config.publicDir,
 	app = express();
@@ -34,7 +35,7 @@ routes(app);
 app.use(express.static(publicDir));
 
 // listen on port
-app.listen(port, function () {
+app.listen(port, host, function () {
 	console.log('server started');
-	console.log('port: %d, pid: %d', port, process.pid);
+	console.log('http://%s:%d  pid: %d', host, port, process.pid);
 });
