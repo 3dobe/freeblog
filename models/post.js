@@ -26,12 +26,7 @@ PostSchema.plugin(autoIncrement.plugin, {
 PostSchema.methods.addComment = function (comment, callback) {
 	comment._id = uuid();
 	this.comments.push(comment);
-	this.save(function (err) {
-		if (err) {
-			callback(err);
-		}
-	});
-	callback(null);
+	this.save(callback);
 };
 PostSchema.methods.deleteComment = function (id, callback) {
 	var comment = _.findWhere(this.comments, { _id: id });
@@ -40,12 +35,7 @@ PostSchema.methods.deleteComment = function (id, callback) {
 	} else {
 		var index = this.comments.indexOf(comment);
 		this.comments.splice(index, 1);
-		this.save(function (err) {
-			if (err) {
-				callback(err);
-			}
-		});
-		callback(null);
+		this.save(callback);
 	}
 }
 PostSchema.methods.updateComment = function (id, body, callback) {
@@ -55,12 +45,7 @@ PostSchema.methods.updateComment = function (id, body, callback) {
 	} else {
 		var index = this.comments.indexOf(comment);
 		_.extend(this.comments[index], body);
-		this.save(function (err) {
-			if (err) {
-				callback(err);
-			}
-		});
-		callback(null);
+		this.save(callback);
 	}
 }
 Post = db.model('Post', PostSchema);
