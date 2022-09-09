@@ -50,6 +50,7 @@ We use Node and MongoDB
 1. Initialize database
 
 	```shell
+	cp -r content.example content
 	node setup
 	```
 

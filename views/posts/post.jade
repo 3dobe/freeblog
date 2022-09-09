@@ -55,7 +55,7 @@ block content
 					.body= post.body
 
 				ul.comments
-					each comment in post.comments
+					each comment in post.comments.reverse()
 						li.comment(data-id=comment._id)
 							.pure-g-r
 								.pure-u-1-2

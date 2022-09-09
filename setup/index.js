@@ -3,7 +3,7 @@ var async = require('async'),
 	config = require('../config'), User;
 
 async.series([
-	dropDatabase, addAdmin
+	dropDatabase, addAdmin, addPosts, addAlbums
 ], done);
 
 function addAdmin(callback) {
@@ -22,6 +22,44 @@ function addAdmin(callback) {
 			}
 		});
 	});
+}
+
+function addPosts(callback) {
+	var Post = require('../models/post');
+	async.eachSeries(
+		config.posts,
+		function (item, next) {
+			var post = new Post(item);
+			post.save(next);
+		},
+		function (err) {
+			if (err) {
+				callback(err);
+			} else {
+				console.log('posts inserted');
+				callback(null);
+			}
+		}
+	);
+}
+
+function addAlbums(callback) {
+	var Album = require('../models/album');
+	async.eachSeries(
+		config.albums,
+		function (item, next) {
+			var album = new Album(item);
+			album.save(next);
+		},
+		function (err) {
+			if (err) {
+				callback(err);
+			} else {
+				console.log('albums inserted');
+				callback(null);
+			}
+		}
+	);
 }
 
 function dropDatabase(callback) {

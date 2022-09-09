@@ -32,7 +32,7 @@ AlbumSchema.plugin(autoIncrement.plugin, {
 AlbumSchema.pre('save', function (next) {
 	if (this.isNew) {
 		// create album diretory
-		fs.mkdirp(this.getAlbumPath(), next);
+		fs.ensureDir(this.getAlbumPath(), next);
 	} else {
 		next();
 	}
